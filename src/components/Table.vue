@@ -1,25 +1,28 @@
 <template>
-  <div>
-    <table>
-      <thead>
-        <tr>
-          <th @click="sort('name')">Имя</th>
-          <th @click="sort('phone')">Телефон</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="user in users" :key="user.uuid">
-          <td>{{ user.name }}</td>
-          <td>{{ user.phone }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="table">
+    <div class="table-head">
+      <div @click="sort('name')" class="table-head__cell">Имя</div>
+      <div @click="sort('phone')" class="table-head__cell">Телефон</div>
+    </div>
+
+    <div class="table-body">
+      <div v-for="user in users" :key="user.uuid" class="table-row">
+        <div>
+          <div class="table-row__cell">{{ user.name }}</div>
+          <div class="table-row__cell">{{ user.phone }}</div>
+        </div>
+        <div v-for="child in user.children" :key="child.uuid" class="table-row">
+          <div>
+            <div class="table-row__cell">{{ child.name }}</div>
+            <div class="table-row__cell">{{ child.phone }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { toRefs } from "vue";
-
 export default {
   props: ["users"],
   emits: ["onSortUsers"],
