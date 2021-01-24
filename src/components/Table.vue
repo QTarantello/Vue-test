@@ -6,15 +6,15 @@
     </div>
 
     <div class="table-body">
-      <div v-for="user in users" :key="user.uuid" class="table-row">
-        <div>
+      <div v-for="user in users" :key="user.uuid">
+        <div class="table-row">
           <div class="table-row__cell">{{ user.name }}</div>
           <div class="table-row__cell">{{ user.phone }}</div>
         </div>
-        <div v-for="child in user.children" :key="child.uuid" class="table-row">
-          <div>
-            <div class="table-row__cell">{{ child.name }}</div>
-            <div class="table-row__cell">{{ child.phone }}</div>
+        <div v-for="child in user.children" :key="child.uuid">
+          <div class="table-row--child">
+            <div class="table-row__cell--child">{{ child.name }}</div>
+            <div class="table-row__cell--child">{{ child.phone }}</div>
           </div>
         </div>
       </div>
@@ -35,64 +35,57 @@ export default {
 </script>
 
 <style scoped>
-body {
-  font-family: Helvetica Neue, Arial, sans-serif;
-  font-size: 14px;
-  color: #444;
+.table {
+  width: 600px;
+  margin: 0 auto;
 }
 
-table {
-  border: 2px solid #42b983;
-  border-radius: 3px;
-  background-color: #fff;
+.table-head {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid rgb(203, 203, 203);
+  background-color: rgb(224, 224, 224);
 }
 
-th {
-  background-color: #42b983;
-  color: rgba(255, 255, 255, 0.66);
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+.table-row__cell--child,
+.table-head__cell {
+  width: 300px;
+  padding: 5px;
+  border-left: 1px solid rgb(203, 203, 203);
 }
 
-td {
-  background-color: #f9f9f9;
+.table-row__cell--child:first-of-type,
+.table-head__cell:first-of-type {
+  border: 0;
 }
 
-th,
-td {
-  min-width: 120px;
-  padding: 10px 20px;
+.table-row--child,
+.table-row {
+  display: flex;
+  flex-direction: row;
+  margin: -1px 0 0 0;
+  border: 1px solid rgb(203, 203, 203);
 }
 
-th.active {
-  color: #fff;
+.table-row__cell {
+  width: 300px;
+  padding: 5px;
+  border-left: 1px solid rgb(203, 203, 203);
 }
 
-th.active .arrow {
-  opacity: 1;
+.table-row__cell:first-of-type {
+  border: 0;
 }
 
-.arrow {
-  display: inline-block;
-  vertical-align: middle;
-  width: 0;
-  height: 0;
-  margin-left: 5px;
-  opacity: 0.66;
+.table-row--child {
+  margin: 0 0 0 50px;
 }
 
-.arrow.asc {
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-bottom: 4px solid #fff;
+.table-row--child:first-of-type {
+  border-top: 0;
 }
 
-.arrow.dsc {
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 4px solid #fff;
+.table-row__cell--child:first-of-type {
+  width: 249px;
 }
 </style>
