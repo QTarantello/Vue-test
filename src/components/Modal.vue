@@ -56,7 +56,6 @@ export default {
     const clear = () => {
       name.value = "";
       phone.value = "";
-      parentUuid.value = null;
       errors.value = {
         name: null,
         error: null,
