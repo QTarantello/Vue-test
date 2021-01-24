@@ -7,11 +7,11 @@
 
 <script>
 import { v4 as uuidv4 } from "uuid";
-import useSorting from "./components/composition/useSorting";
+import sortUsersUtil from "./components/composition/utils.js";
 import Modal from "./components/Modal.vue";
 import Table from "./components/Table.vue";
 
-import { computed, reactive, toRaw } from "vue";
+import { reactive, toRaw } from "vue";
 
 const makeUser = ({ name, phone }) => ({
   uuid: uuidv4(),
@@ -82,7 +82,7 @@ export default {
     const sortUsers = (key) => {
       const sortBy = reduceSortBy(toRaw(state.sortBy), key);
 
-      state.users = useSorting(toRaw(state.users), sortBy);
+      state.users = sortUsersUtil(toRaw(state.users), sortBy);
       state.sortBy = sortBy;
 
       localStorage.setItem("state", JSON.stringify(toRaw(state)));
@@ -97,8 +97,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.task-list {
-  list-style: none;
-}
-</style>
+<style scoped></style>

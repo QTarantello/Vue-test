@@ -1,4 +1,4 @@
-const useSorting = (users, { key, direction }) => {
+const sortUsersUtil = (users, { key, direction }) => {
   switch (direction) {
     case "asc":
       return [...users].sort((a, b) => (a[key] > b[key] ? 1 : -1));
@@ -7,4 +7,4 @@ const useSorting = (users, { key, direction }) => {
   }
 };
 
-export default useSorting;
+export default sortUsersUtil;

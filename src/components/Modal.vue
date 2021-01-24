@@ -3,24 +3,25 @@
     <button class="button" @click="toggleModal()">Добавить</button>
   </div>
   <div v-if="modalOpened" class="modal">
-    <div class="content">
-      <div class="header">
+    <div class="modal-content">
+      <div class="modal-header">
         <h1>Новый пользователь</h1>
-        <span @click="toggleModal()" class="close">X</span>
+        <span @click="toggleModal()" class="close-button">X</span>
       </div>
-      <div class="body">
-        <div class="name">
-          <label>Имя</label>
-          <input v-model="name" type="text" />
+      <div class="modal-body">
+        <div class="modal-body__name">
+          <label class="label">Имя</label>
+          <input class="input" v-model="name" type="text" />
           <div v-if="errors.name !== null">{{ errors.name }}</div>
         </div>
-        <div class="phone">
-          <label>Телефон</label>
-          <input v-model="phone" type="text" />
+        <div class="modal-body__phone">
+          <label class="label">Телефон</label>
+          <input class="input" v-model="phone" type="text" />
           <div v-if="errors.phone !== null">{{ errors.phone }}</div>
         </div>
-        <ul class="task-list my-list">
-          <select v-model="parentUuid">
+        <div class="modal-body__parent">
+          <label class="label">Начальник</label>
+          <select class="select" v-model="parentUuid">
             <option
               v-for="user in users"
               v-bind:value="user.uuid"
@@ -29,8 +30,10 @@
               {{ user.name }}
             </option>
           </select>
-        </ul>
-        <button @click="onAddUser">Сохранить</button>
+        </div>
+        <div class="submit-button">
+          <button class="button" @click="onAddUser">Сохранить</button>
+        </div>
       </div>
     </div>
   </div>
@@ -108,6 +111,62 @@ export default {
 </script>
 
 <style scoped>
+.modal {
+  display: flex;
+  align-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  height: 400px;
+  width: 450px;
+  background: #fff;
+  margin: auto;
+}
+
+.modal-header {
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
+}
+
+.modal-body {
+  margin-top: 30px;
+}
+
+.modal-body__name {
+  padding: 30px;
+}
+
+.input {
+  padding: 0.5em 0.6em;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-shadow: inset 0 1px 3px #ddd;
+  border-radius: 4px;
+  vertical-align: middle;
+  box-sizing: border-box;
+  margin-left: 50px;
+  width: 250px;
+}
+
+.label {
+  color: #777;
+}
+
+.modal-body__phone {
+  padding: 30px;
+}
+
+.modal-body__parent {
+  padding: 30px;
+}
+
 .button-container {
   display: flex;
   flex-direction: row;
@@ -115,6 +174,21 @@ export default {
   width: 600px;
   margin: 0 auto;
   padding: 20px;
+}
+
+.select {
+  width: 250px;
+  height: 2.25em;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  padding: 0.5em 0.6em;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-shadow: inset 0 1px 3px #ddd;
+  border-radius: 4px;
+  vertical-align: middle;
+  box-sizing: border-box;
+  margin-left: 36px;
 }
 
 .button {
@@ -127,35 +201,11 @@ export default {
   border-radius: 2px;
 }
 
-.modal {
-  position: fixed;
-  display: flex;
-  align-content: center;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.4);
+.submit-button {
+  margin-left: 30px;
 }
 
-.content {
-  min-width: 370px;
-  width: 600px;
-  background: #fff;
-  margin: auto;
-}
-
-.header {
-  display: flex;
-  align-content: space-between;
-}
-
-.body {
-  display: flex;
-  align-content: space-between;
-}
-
-.close {
+.close-button {
   cursor: pointer;
 }
 </style>
