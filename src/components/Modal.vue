@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <button @click="toggleModal()">Click me</button>
+  <div class="button-container">
+    <button class="button" @click="toggleModal()">Добавить</button>
   </div>
   <div v-if="modalOpened" class="modal">
     <div class="content">
@@ -12,10 +12,12 @@
         <div class="name">
           <label>Имя</label>
           <input v-model="name" type="text" />
+          <div v-if="errors.name !== null">{{ errors.name }}</div>
         </div>
         <div class="phone">
           <label>Телефон</label>
           <input v-model="phone" type="text" />
+          <div v-if="errors.phone !== null">{{ errors.phone }}</div>
         </div>
         <ul class="task-list my-list">
           <select v-model="parentUuid">
@@ -28,7 +30,7 @@
             </option>
           </select>
         </ul>
-        <button @click="onAddUser">Add person</button>
+        <button @click="onAddUser">Сохранить</button>
       </div>
     </div>
   </div>
@@ -43,27 +45,58 @@ export default {
   setup(_, { emit }) {
     const modalOpened = ref(false);
 
-    const toggleModal = () => (modalOpened.value = !modalOpened.value);
-
     const name = ref("");
     const phone = ref("");
     const parentUuid = ref(null);
+    const errors = ref({
+      name: null,
+      phone: null,
+    });
 
-    const onAddUser = () => {
-      toggleModal();
-
-      emit("onAddUser", {
-        name: name.value,
-        phone: phone.value,
-        parentUuid: parentUuid.value,
-      });
-
+    const clear = () => {
       name.value = "";
       phone.value = "";
       parentUuid.value = null;
+      errors.value = {
+        name: null,
+        error: null,
+      };
+    };
+
+    const toggleModal = () => {
+      modalOpened.value = !modalOpened.value;
+      if (!modalOpened.value) {
+        clear();
+      }
+    };
+
+    const onAddUser = () => {
+      const trimmedName = name.value.trim();
+      const errorInName = trimmedName.length === 0;
+
+      const trimmedPhone = phone.value.trim();
+      const errorInPhone = trimmedPhone.length === 0;
+
+      if (errorInName || errorInPhone) {
+        errors.value = {
+          name: errorInName ? "Имя не может быть пустым" : null,
+          phone: errorInPhone ? "Телефон не может быть пустым" : null,
+        };
+      } else {
+        toggleModal();
+
+        emit("onAddUser", {
+          name: trimmedName,
+          phone: trimmedPhone,
+          parentUuid: parentUuid.value,
+        });
+
+        clear();
+      }
     };
 
     return {
+      errors,
       modalOpened,
       toggleModal,
       onAddUser,
@@ -76,6 +109,25 @@ export default {
 </script>
 
 <style scoped>
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.button {
+  font-size: 100%;
+  padding: 0.5em 1em;
+  color: rgba(0, 0, 0, 0.8);
+  border: transparent;
+  background-color: #e6e6e6;
+  text-decoration: none;
+  border-radius: 2px;
+}
+
 .modal {
   position: fixed;
   display: flex;
