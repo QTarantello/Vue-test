@@ -40,7 +40,6 @@ import { ref } from "vue";
 export default {
   props: ["users"],
   emits: ["onAddUser"],
-
   setup(_, { emit }) {
     const modalOpened = ref(false);
 

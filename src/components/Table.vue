@@ -21,31 +21,12 @@
 import { toRefs } from "vue";
 
 export default {
-  props: ["users", "sortBy"],
-  emit: ["sortUsers"],
+  props: ["users"],
+  emits: ["onSortUsers"],
 
-  updated() {
-    console.log("tableUpdated");
-  },
-
-  setup(props, { emit }) {
-    const { sortBy } = toRefs(props);
-
-    const sort = (key) => {
-      emit("sortUsers", {
-        key,
-        direction:
-          sortBy.key === key
-            ? sortBy.direction === "desc"
-              ? "asc"
-              : "desc"
-            : sortBy.direction,
-      });
-    };
-
-    return {
-      sort,
-    };
+  setup(_, { emit }) {
+    const sort = (key) => emit("onSortUsers", key);
+    return { sort };
   },
 };
 </script>

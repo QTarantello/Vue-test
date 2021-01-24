@@ -1,7 +1,7 @@
 <template>
   <main>
-    <Table :sortBy="sortBy" @sortUsers="sortUsers" :users="users"></Table>
-    <Modal @onAddUser="addUser" :users="users" />
+    <Modal @onAddUser="addUser" :users="state.users" />
+    <Table @onSortUsers="sortUsers" :users="state.users" />
   </main>
 </template>
 
@@ -11,7 +11,7 @@ import useSorting from "./components/composition/useSorting";
 import Modal from "./components/Modal.vue";
 import Table from "./components/Table.vue";
 
-import { reactive, toRaw } from "vue";
+import { computed, reactive, toRaw } from "vue";
 
 const makeUser = ({ name, phone }) => ({
   uuid: uuidv4(),
@@ -21,11 +21,13 @@ const makeUser = ({ name, phone }) => ({
 });
 
 const initialState = () => {
-  const state = localStorage.getItem("state");
-  if (state !== null) {
-    return JSON.parse(state);
+  const json = localStorage.getItem("state");
+
+  let initial;
+  if (json !== null) {
+    initial = JSON.parse(json);
   } else {
-    return {
+    initial = {
       sortBy: {
         key: "name",
         direction: "asc",
@@ -33,13 +35,14 @@ const initialState = () => {
       users: [makeUser({ name: "Вася", phone: "8-800-555-35-35" })],
     };
   }
+
+  return reactive(initial);
 };
 
 const reduceUsers = (users, { name, phone, parentUuid }) => {
   const newUser = makeUser({ name, phone });
 
   if (parentUuid === null) {
-    console.log(users);
     return [...users, newUser];
   } else {
     return users.map((user) => {
@@ -52,30 +55,41 @@ const reduceUsers = (users, { name, phone, parentUuid }) => {
   }
 };
 
+const reduceSortBy = (prevSortBy, key) => ({
+  key,
+  direction:
+    prevSortBy.key === key
+      ? prevSortBy.direction === "desc"
+        ? "asc"
+        : "desc"
+      : prevSortBy.direction,
+});
+
 export default {
   name: "App",
   components: {
     Modal,
     Table,
   },
-
   setup() {
-    const initial = initialState();
-    const state = reactive(initial);
+    const state = initialState();
 
     const addUser = (payload) => {
       state.users = reduceUsers(toRaw(state.users), payload);
       localStorage.setItem("state", JSON.stringify(toRaw(state)));
     };
 
-    const sortUsers = (sortBy) => {
-      state.sortBy = sortBy;
+    const sortUsers = (key) => {
+      const sortBy = reduceSortBy(toRaw(state.sortBy), key);
+
       state.users = useSorting(toRaw(state.users), sortBy);
+      state.sortBy = sortBy;
+
+      localStorage.setItem("state", JSON.stringify(toRaw(state)));
     };
 
     return {
-      sortBy: state.sortBy,
-      users: state.users,
+      state,
       addUser,
       sortUsers,
     };
