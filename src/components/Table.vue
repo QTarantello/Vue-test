@@ -109,8 +109,4 @@ export default {
 .table-row__cell--child:first-of-type {
   width: 249px;
 }
-
-.arrow {
-  transform: rotateX(180deg);
-}
 </style>

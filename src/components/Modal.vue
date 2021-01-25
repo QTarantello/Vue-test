@@ -160,6 +160,10 @@ export default {
   margin-right: 13px;
 }
 
+.close-button {
+  cursor: pointer;
+}
+
 .errors-container {
   position: absolute;
   margin: 35px 0 0 100px;
@@ -183,10 +187,6 @@ export default {
   width: 370px;
   margin: 0 auto;
   padding: 10px;
-}
-
-.close-button {
-  cursor: pointer;
 }
 
 label {
