@@ -1,8 +1,24 @@
 <template>
   <div class="table">
     <div class="table-head">
-      <div @click="sort('name')" class="table-head__cell">Имя</div>
-      <div @click="sort('phone')" class="table-head__cell">Телефон</div>
+      <div @click="sort('name')" class="table-head__cell">
+        Имя
+        <span v-if="sortBy.key === 'name' && sortBy.direction === 'asc'">
+          ▼
+        </span>
+        <span v-if="sortBy.key === 'name' && sortBy.direction === 'desc'">
+          ▲
+        </span>
+      </div>
+      <div @click="sort('phone')" class="table-head__cell">
+        Телефон
+        <span v-if="sortBy.key === 'phone' && sortBy.direction === 'asc'">
+          ▼
+        </span>
+        <span v-if="sortBy.key === 'phone' && sortBy.direction === 'desc'">
+          ▲
+        </span>
+      </div>
     </div>
 
     <div class="table-body">
@@ -27,11 +43,12 @@
 
 <script>
 export default {
-  props: ["users"],
+  props: ["users", "sortBy"],
   emits: ["onSortUsers"],
 
   setup(_, { emit }) {
     const sort = (key) => emit("onSortUsers", key);
+
     return { sort };
   },
 };
@@ -55,6 +72,7 @@ export default {
   width: 300px;
   padding: 5px;
   border-left: 1px solid rgb(203, 203, 203);
+  cursor: pointer;
 }
 
 .table-row__cell--child:first-of-type,
@@ -90,5 +108,9 @@ export default {
 
 .table-row__cell--child:first-of-type {
   width: 249px;
+}
+
+.arrow {
+  transform: rotateX(180deg);
 }
 </style>

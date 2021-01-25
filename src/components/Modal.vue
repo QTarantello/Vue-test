@@ -1,6 +1,6 @@
 <template>
-  <div class="button-container">
-    <button class="button" @click="toggleModal()">Добавить</button>
+  <div class="add-button-container">
+    <button @click="toggleModal()">Добавить</button>
   </div>
   <div v-if="modalOpened" class="modal">
     <div class="modal-content">
@@ -10,22 +10,22 @@
       </div>
       <div class="modal-body">
         <div class="modal-body__name">
-          <label class="label">Имя</label>
-          <input class="input" v-model="name" type="text" />
-          <div class="errors" v-if="errors.name !== null">
+          <label>Имя</label>
+          <input v-model="name" type="text" />
+          <div class="errors-container" v-if="errors.name !== null">
             {{ errors.name }}
           </div>
         </div>
         <div class="modal-body__phone">
-          <label class="label">Телефон</label>
-          <input class="input" v-model="phone" type="text" />
-          <div class="errors" v-if="errors.phone !== null">
+          <label>Телефон</label>
+          <input v-model="phone" type="text" />
+          <div class="errors-container" v-if="errors.phone !== null">
             {{ errors.phone }}
           </div>
         </div>
         <div class="modal-body__parent">
-          <label class="label-boss">Начальник</label>
-          <select class="select" v-model="parentUuid">
+          <label class="modal-body__parent--label">Начальник</label>
+          <select v-model="parentUuid">
             <option
               v-for="user in users"
               v-bind:value="user.uuid"
@@ -35,8 +35,8 @@
             </option>
           </select>
         </div>
-        <div class="submit-button">
-          <button class="button" @click="onAddUser">Сохранить</button>
+        <div class="submit-button-container">
+          <button @click="onAddUser">Сохранить</button>
         </div>
       </div>
     </div>
@@ -71,9 +71,10 @@ export default {
 
     const toggleModal = () => {
       modalOpened.value = !modalOpened.value;
-      if (!modalOpened.value) {
-        clear();
+      if (modalOpened.value) {
+        parentUuid.value = null;
       }
+      clear();
     };
 
     const onAddUser = () => {
@@ -96,8 +97,6 @@ export default {
           phone: trimmedPhone,
           parentUuid: parentUuid.value,
         });
-
-        clear();
       }
     };
 
@@ -147,7 +146,65 @@ export default {
   margin-top: 65px;
 }
 
-.input {
+.modal-body__name,
+.modal-body__phone,
+.modal-body__parent {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  margin: 0 40px 40px 0;
+}
+
+.modal-body__parent--label {
+  color: #777;
+  margin-right: 13px;
+}
+
+.errors-container {
+  position: absolute;
+  margin: 35px 0 0 100px;
+  font-size: 15px;
+  color: rgba(255, 0, 0, 0.616);
+}
+
+.add-button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.submit-button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 370px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.close-button {
+  cursor: pointer;
+}
+
+label {
+  color: #777;
+}
+
+button {
+  font-size: 100%;
+  padding: 0.5em 1em;
+  color: rgba(0, 0, 0, 0.8);
+  border: transparent;
+  background-color: #e6e6e6;
+  text-decoration: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input {
   padding: 0.5em 0.6em;
   display: inline-block;
   border: 1px solid #ccc;
@@ -159,7 +216,7 @@ export default {
   width: 250px;
 }
 
-.select {
+select {
   width: 250px;
   border: 1px solid #ccc;
   background-color: #fff;
@@ -171,62 +228,5 @@ export default {
   vertical-align: middle;
   box-sizing: border-box;
   margin-left: 36px;
-}
-
-.label {
-  color: #777;
-}
-
-.label-boss {
-  color: #777;
-  margin-right: 13px;
-}
-
-.modal-body__name,
-.modal-body__phone,
-.modal-body__parent {
-  display: flex;
-  align-items: baseline;
-  justify-content: flex-end;
-  margin: 0 40px 40px 0;
-}
-
-.errors {
-  position: absolute;
-  margin: 35px 0 0 100px;
-  font-size: 15px;
-  color: rgba(255, 0, 0, 0.616);
-}
-
-.button-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.button {
-  font-size: 100%;
-  padding: 0.5em 1em;
-  color: rgba(0, 0, 0, 0.8);
-  border: transparent;
-  background-color: #e6e6e6;
-  text-decoration: none;
-  border-radius: 5px;
-}
-
-.submit-button {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  width: 370px;
-  margin: 0 auto;
-  padding: 10px;
-}
-
-.close-button {
-  cursor: pointer;
 }
 </style>

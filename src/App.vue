@@ -1,7 +1,11 @@
 <template>
   <main>
     <Modal @onAddUser="addUser" :users="state.users" />
-    <Table @onSortUsers="sortUsers" :users="state.users" />
+    <Table
+      @onSortUsers="sortUsers"
+      :sortBy="state.sortBy"
+      :users="state.users"
+    />
   </main>
 </template>
 
