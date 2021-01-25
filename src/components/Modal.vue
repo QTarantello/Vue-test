@@ -5,22 +5,26 @@
   <div v-if="modalOpened" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h1>Новый пользователь</h1>
-        <span @click="toggleModal()" class="close-button">X</span>
+        <h3>Добавление пользователя</h3>
+        <span @click="toggleModal()" class="close-button">x</span>
       </div>
       <div class="modal-body">
         <div class="modal-body__name">
           <label class="label">Имя</label>
           <input class="input" v-model="name" type="text" />
-          <div v-if="errors.name !== null">{{ errors.name }}</div>
+          <div class="errors" v-if="errors.name !== null">
+            {{ errors.name }}
+          </div>
         </div>
         <div class="modal-body__phone">
           <label class="label">Телефон</label>
           <input class="input" v-model="phone" type="text" />
-          <div v-if="errors.phone !== null">{{ errors.phone }}</div>
+          <div class="errors" v-if="errors.phone !== null">
+            {{ errors.phone }}
+          </div>
         </div>
         <div class="modal-body__parent">
-          <label class="label">Начальник</label>
+          <label class="label-boss">Начальник</label>
           <select class="select" v-model="parentUuid">
             <option
               v-for="user in users"
@@ -81,8 +85,8 @@ export default {
 
       if (errorInName || errorInPhone) {
         errors.value = {
-          name: errorInName ? "Имя не может быть пустым" : null,
-          phone: errorInPhone ? "Телефон не может быть пустым" : null,
+          name: errorInName ? "Поле не может быть пустым" : null,
+          phone: errorInPhone ? "Поле не может быть пустым" : null,
         };
       } else {
         toggleModal();
@@ -114,6 +118,7 @@ export default {
 .modal {
   display: flex;
   align-content: center;
+  flex-direction: column;
   position: fixed;
   top: 0;
   left: 0;
@@ -131,16 +136,15 @@ export default {
 
 .modal-header {
   display: flex;
-  flex-direction: row;
-  align-content: space-between;
+  justify-content: space-between;
+  margin: 25px 40px 0 30px;
+  align-items: center;
+  font-size: 18px;
 }
 
 .modal-body {
-  margin-top: 30px;
-}
-
-.modal-body__name {
-  padding: 30px;
+  position: relative;
+  margin-top: 65px;
 }
 
 .input {
@@ -155,30 +159,8 @@ export default {
   width: 250px;
 }
 
-.label {
-  color: #777;
-}
-
-.modal-body__phone {
-  padding: 30px;
-}
-
-.modal-body__parent {
-  padding: 30px;
-}
-
-.button-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
 .select {
   width: 250px;
-  height: 2.25em;
   border: 1px solid #ccc;
   background-color: #fff;
   padding: 0.5em 0.6em;
@@ -191,6 +173,40 @@ export default {
   margin-left: 36px;
 }
 
+.label {
+  color: #777;
+}
+
+.label-boss {
+  color: #777;
+  margin-right: 13px;
+}
+
+.modal-body__name,
+.modal-body__phone,
+.modal-body__parent {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  margin: 0 40px 40px 0;
+}
+
+.errors {
+  position: absolute;
+  margin: 35px 0 0 100px;
+  font-size: 15px;
+  color: rgba(255, 0, 0, 0.616);
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
 .button {
   font-size: 100%;
   padding: 0.5em 1em;
@@ -198,11 +214,16 @@ export default {
   border: transparent;
   background-color: #e6e6e6;
   text-decoration: none;
-  border-radius: 2px;
+  border-radius: 5px;
 }
 
 .submit-button {
-  margin-left: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 370px;
+  margin: 0 auto;
+  padding: 10px;
 }
 
 .close-button {
